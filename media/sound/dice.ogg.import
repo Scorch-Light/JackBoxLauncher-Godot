@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/dice.ogg-f0df9eba299f65d9e5eba5a9d5d90060.oggstr"
+
+[deps]
+
+source_file="res://media/sound/dice.ogg"
+dest_files=[ "res://.import/dice.ogg-f0df9eba299f65d9e5eba5a9d5d90060.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

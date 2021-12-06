@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/chaos.ogg-c2221c01fb6ce54a5b9cdd227b6d5441.oggstr"
+
+[deps]
+
+source_file="res://media/sound/chaos.ogg"
+dest_files=[ "res://.import/chaos.ogg-c2221c01fb6ce54a5b9cdd227b6d5441.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
