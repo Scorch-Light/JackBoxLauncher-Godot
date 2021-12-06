@@ -32,8 +32,8 @@ func _ready():
 func splay(sound):
 	#audio = node
 	sound.loop = false
-	audio.set_stream(sound)
-	audio.play()
+	#audio.set_stream(sound)
+	#audio.play()
 	
 
 func save_settings():

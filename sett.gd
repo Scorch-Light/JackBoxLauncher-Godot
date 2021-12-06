@@ -17,7 +17,5 @@ func _on_screen_tree_exiting():
 	global.save_settings()
 
 
-
-
-
-
+func _on_menu_pressed():
+	get_tree().change_scene("res://menu.tscn")
