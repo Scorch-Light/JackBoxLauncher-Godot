@@ -1,5 +1,6 @@
 extends Node
 var btnno=[]
+var btngame=[]
 var menupos=0
 
 func _ready():
@@ -19,47 +20,67 @@ func _input(event):
 		launch(menupos)
 
 func createmenu():
+
+		
+		
 	btnno.resize(0)
+	btngame.resize(0)
 	for i in global.gamestot:
-		var item=gamedetails(i)
-		print(item[0])
-		btnno.append(Button.new())
-		get_node("split/ScrollContainer/mainmenu").add_child(btnno[i])
-		btnno[i].set_text(item[0])
-		btnno[i].set_flat(true)
-		btnno[i].connect("pressed", self, "_menu"+str(i)+"_pressed")
-		btnno[i].connect("hover", self, "_menu"+str(i)+"_hover")
+		var item=global.gamedetails(i)
+		if (!global.gamelistseperate) or (item[1]==global.packlist[global.currentpack]):
+			print(item[0] + " Added to Menu")
+			btnno.append(Button.new())
+			btngame.append(i)
+			get_node("split/ScrollContainer/mainmenu").add_child(btnno[-1])
+			btnno[-1].set_text(item[0])
+			btnno[-1].set_flat(true)
+			btnno[-1].connect("pressed", self, "_menu"+str(btnno.size())+"_pressed")
+			btnno[-1].connect("hover", self, "_menu"+str(btnno.size())+"_hover")
+		else:
+			print(item[0] + " Skipped")
+	
+	if global.gamelistseperate:
+		get_node("PackHeadder").show()
+		get_node("PackHeadder/CurrentPack").set_text(global.packlist[global.currentpack])
+		
+		#get_node("split").set_anchor_and_margin(MARGIN_TOP:100,)
+		
+	else:
+		
+		
+		get_node("PackHeadder").hide()
+
+func deletemenu():
+	for i in btnno.size():
+		btnno[i].queue_free()
 
 func _process(delta):		
-	for i in global.gamestot:
+	for i in btnno.size():
 		if btnno[i].is_hovered():
 			cyclemenu(null,i)
 
 		if btnno[i].is_pressed():
-			launch(i)
+			launch(btngame[i])
 			
 		
 		
 			
 
 func launch(i):
-	var item=gamedetails(i)
+	var item=global.gamedetails(i)
 	OS.execute("steam", ["-applaunch",item[12]], true) 
 
-func gamedetails(i):
-	var item
-	item=global.gamelist[i].split(",")
-	return item
+
 
 func cyclemenu(direct,i):
 	if direct=="up":
 		if menupos==0:
-			menupos=global.gamestot-1
+			menupos=btnno.size()-1
 		else:
 			menupos=menupos-1
 		i=menupos
 	elif direct=="down":
-		if menupos==global.gamestot-1:
+		if menupos==btnno.size()-1:
 			menupos=0
 		else:
 			menupos=menupos+1
@@ -67,9 +88,9 @@ func cyclemenu(direct,i):
 	else:
 		menupos=i
 		
-	var item=gamedetails(i)
+	var item=global.gamedetails(btngame[i])
 	if !get_node("split/right/desc").get_text()==item[2].replacen("&#x2c;",","):
-		print(i)
+		print("button: " +str(i) + " game: "+ str(btngame[i]) +" "+ item[0])
 		colorbtn(i)
 		get_node("split/right/pack").set_text(item[1])
 		get_node("split/right/desc").set_text(item[2].replacen("&#x2c;",","))
@@ -80,11 +101,13 @@ func cyclemenu(direct,i):
 	
 func colorbtn(j):
 	var item
-	item = gamedetails(j)
+	item = global.gamedetails(btngame[j])
 	
-	for i in global.gamestot:
+	get_node("PackHeadder/CurrentPack").add_color_override("font_color", Color(item[6]))
+	
+	for i in btnno.size():
 		btnno[i].add_color_override("font_color", Color(item[4]))
-		item = gamedetails(j)
+		item = global.gamedetails(btngame[j])
 		
 	btnno[j].add_color_override("font_color", Color(item[6]))
 	btnno[j].add_color_override("font_color_hover", Color(item[6]))
@@ -96,8 +119,6 @@ func colorbtn(j):
 	get_node("split/right/desc").add_color_override("font_color", Color(item[5]))
 	
 	get_node("split/right/players").add_color_override("font_color", Color(item[7]))
-	
-	print(j)
 
 
 func _on_sett_pressed():
@@ -108,6 +129,26 @@ func _on_sett_pressed():
 
 
 func _on_rand_pressed():
-	cyclemenu(null,randi()%(global.gamestot+1))
+	cyclemenu(null,randi()%(btnno.size()+1))
 	
-
+func _on_PackLeft():
+	if global.currentpack==0:
+		global.currentpack=global.packlist.size()-1
+	else:
+		global.currentpack=global.currentpack-1
+		
+	get_node("PackHeadder/CurrentPack").set_text(global.packlist[global.currentpack])
+	deletemenu()
+	createmenu()
+	cyclemenu(null,0)
+		
+func _on_PackRight():
+	if global.currentpack==global.packlist.size()-1:
+		global.currentpack=0
+	else:
+		global.currentpack=global.currentpack+1
+		
+	get_node("PackHeadder/CurrentPack").set_text(global.packlist[global.currentpack])
+	deletemenu()
+	createmenu()
+	cyclemenu(null,0)

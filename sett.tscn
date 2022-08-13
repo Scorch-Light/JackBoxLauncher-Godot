@@ -3,7 +3,7 @@
 [ext_resource path="res://media/ui/back.png" type="Texture" id=1]
 [ext_resource path="res://sett.gd" type="Script" id=2]
 [ext_resource path="res://popupback.tres" type="StyleBox" id=3]
-[ext_resource path="res://media/lowerbuttons.tres" type="Theme" id=4]
+[ext_resource path="res://media/buttons.tres" type="Theme" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.509804 )
@@ -15,9 +15,6 @@ script = ExtResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.231373, 0.231373, 0.231373, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TabContainer" type="TabContainer" parent="."]
 anchor_right = 1.0
@@ -26,15 +23,14 @@ margin_left = 50.0
 margin_top = 50.0
 margin_right = -50.0
 margin_bottom = -175.0
+theme = ExtResource( 4 )
 custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="General" type="Tabs" parent="TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 24.0
+margin_top = 65.0
+theme = ExtResource( 4 )
 
 [node name="Options" type="GridContainer" parent="TabContainer/General"]
 anchor_right = 1.0
@@ -43,14 +39,13 @@ margin_left = 25.0
 margin_top = 25.0
 margin_right = -25.0
 margin_bottom = -25.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme = ExtResource( 4 )
 
 [node name="CheckBox" type="CheckButton" parent="TabContainer/General/Options"]
-margin_right = 874.0
-margin_bottom = 52.0
+margin_right = 1130.0
+margin_bottom = 85.0
 size_flags_horizontal = 7
+theme = ExtResource( 4 )
 custom_styles/hover = ExtResource( 3 )
 custom_styles/pressed = ExtResource( 3 )
 custom_styles/focus = ExtResource( 3 )
@@ -58,6 +53,23 @@ custom_styles/disabled = ExtResource( 3 )
 custom_styles/hover_pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 3 )
 text = "Fullscreen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SeperatePacks" type="CheckButton" parent="TabContainer/General/Options"]
+margin_top = 89.0
+margin_right = 1130.0
+margin_bottom = 174.0
+size_flags_horizontal = 7
+theme = ExtResource( 4 )
+custom_styles/hover = ExtResource( 3 )
+custom_styles/pressed = ExtResource( 3 )
+custom_styles/focus = ExtResource( 3 )
+custom_styles/disabled = ExtResource( 3 )
+custom_styles/hover_pressed = ExtResource( 3 )
+custom_styles/normal = ExtResource( 3 )
+text = "Seperate Packs"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -85,7 +97,7 @@ __meta__ = {
 }
 
 [node name="menu" type="Button" parent="menucon"]
-margin_right = 924.0
+margin_right = 1180.0
 margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -96,4 +108,5 @@ expand_icon = true
 
 [connection signal="tree_exiting" from="." to="." method="_on_screen_tree_exiting"]
 [connection signal="toggled" from="TabContainer/General/Options/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="toggled" from="TabContainer/General/Options/SeperatePacks" to="." method="_on_Seperate_Packs_toggled"]
 [connection signal="pressed" from="menucon/menu" to="." method="_on_menu_pressed"]
